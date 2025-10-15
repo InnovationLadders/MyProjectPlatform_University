@@ -12,6 +12,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { formatDate, getDaysRemaining } from '../utils/dateUtils';
 import { ProjectChat } from '../components/ProjectChat/ProjectChat';
 import TasksList from '../components/ProjectTasks/TasksList';
+import TasksGanttChart from '../components/ProjectTasks/TasksGanttChart';
 import { AddTaskModal } from '../components/ProjectTasks/AddTaskModal';
 import { AddTeamMemberModal } from '../components/ProjectTeam/AddTeamMemberModal';
 import { RemoveStudentModal } from '../components/ProjectTeam/RemoveStudentModal';
@@ -740,6 +741,13 @@ const ProjectDetails: React.FC = () => {
               students={projectStudents || []}
               onTaskUpdated={handleTaskAdded}
             />
+
+            {projectTasks && projectTasks.length > 0 && (
+              <TasksGanttChart
+                tasks={projectTasks}
+                students={projectStudents}
+              />
+            )}
           </div>
         )}
 
