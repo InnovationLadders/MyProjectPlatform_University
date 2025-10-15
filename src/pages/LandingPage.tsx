@@ -36,78 +36,78 @@ export const LandingPage: React.FC = () => {
       title: t('sidebar.projectIdeas'),
       description: t('home.featuresSection.description'),
       link: '/project-ideas',
-      color: 'from-yellow-400 to-orange-500'
+      color: 'from-amber-600 to-yellow-600'
     },
     {
       icon: Users,
       title: t('sidebar.projects'),
       description: t('home.featuresSection.description'),
       link: '/projects',
-      color: 'from-blue-500 to-purple-600'
+      color: 'from-slate-600 to-gray-700'
     },
     {
       icon: MessageCircle,
       title: t('sidebar.consultations'),
       description: t('home.featuresSection.description'),
       link: '/consultations',
-      color: 'from-green-500 to-teal-600'
+      color: 'from-emerald-600 to-teal-700'
     },
     {
       icon: ShoppingCart,
       title: t('sidebar.store'),
       description: t('home.featuresSection.description'),
       link: '/store',
-      color: 'from-pink-500 to-rose-600'
+      color: 'from-orange-600 to-red-700'
     },
     {
       icon: Bot,
       title: t('sidebar.aiAssistant'),
       description: t('home.featuresSection.description'),
       link: '/ai-assistant',
-      color: 'from-indigo-500 to-blue-600'
+      color: 'from-cyan-600 to-sky-700'
     },
     {
       icon: GalleryVertical,
       title: t('sidebar.gallery'),
       description: t('home.featuresSection.description'),
       link: '/gallery',
-      color: 'from-purple-500 to-pink-600'
+      color: 'from-teal-600 to-cyan-700'
     },
     {
       icon: BookOpen,
       title: t('sidebar.resources'),
       description: t('home.featuresSection.description'),
       link: '/resources',
-      color: 'from-emerald-500 to-cyan-600'
+      color: 'from-emerald-600 to-green-700'
     },
     {
       icon: Shield,
       title: t('sidebar.intellectualProperty'),
       description: t('home.featuresSection.description'),
       link: '/intellectual-property',
-      color: 'from-red-500 to-rose-600'
+      color: 'from-red-700 to-rose-800'
     },
   ];
 
   const testimonials = [
     {
-      name: 'سارة أحمد',
-      role: 'معلمة علوم',
-      content: 'منصة مشروعي غيرت طريقة تدريسي تماماً. الطلاب أصبحوا أكثر تفاعلاً وإبداعاً.',
+      name: 'د. سارة أحمد',
+      role: 'أستاذة الفيزياء الجزيئية',
+      content: 'منصة مشروعي حولت أسلوب إدارة الأبحاث تماماً. الطلاب الجامعيين أصبحوا أكثر انخراطاً في البحث العلمي.',
       avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=150',
       rating: 5
     },
     {
       name: 'محمد علي',
-      role: 'طالب ثانوي',
-      content: 'تمكنت من تطوير مشروع روبوت متقدم بفضل الإرشادات والدعم المتاح في المنصة.',
+      role: 'طالب هندسة - السنة الثالثة',
+      content: 'تمكنت من تطوير نظام ذكي متطور لإدارة الطاقة بفضل الإشراف الأكاديمي والدعم البحثي المتاح.',
       avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150',
       rating: 5
     },
     {
-      name: 'فاطمة خالد',
-      role: 'مديرة مدرسة',
-      content: 'المنصة ساعدتنا في تنظيم وإدارة مشاريع الطلاب بكفاءة عالية ومتابعة تقدمهم.',
+      name: 'د. فاطمة خالد',
+      role: 'عميدة كلية الهندسة',
+      content: 'المنصة ساعدتنا في تنظيم وإدارة المشاريع البحثية للطلاب الجامعيين بكفاءة عالية ومتابعة تقدمهم الأكاديمي.',
       avatar: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=150',
       rating: 5
     },
@@ -121,7 +121,7 @@ export const LandingPage: React.FC = () => {
         <div 
           className="absolute inset-0 w-full h-full"
           style={{
-            backgroundImage: 'url("https://images.pexels.com/photos/8471793/pexels-photo-8471793.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")',
+            backgroundImage: 'url("https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat'
@@ -129,7 +129,7 @@ export const LandingPage: React.FC = () => {
         ></div>
         
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 opacity-85"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-800 via-gray-700 to-slate-900 opacity-80"></div>
         
         <motion.div
           initial={{ opacity: 0, y: 20 }}

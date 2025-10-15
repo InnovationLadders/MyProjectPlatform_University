@@ -1,6 +1,6 @@
 {
   "appName": "MyProject",
-  "appTagline": "School Projects Platform",
+  "appTagline": "University Projects Platform",
   
   "common": {
     "user": "User",
@@ -95,11 +95,11 @@
   },
   
   "roles": {
-    "student": "Student",
-    "teacher": "Teacher",
-    "school": "School",
+    "student": "University Student",
+    "professor": "Professor",
+    "university": "University",
     "admin": "Admin",
-    "consultant": "Consultant"
+    "consultant": "Academic Consultant"
   },
   
   "header": {
@@ -114,7 +114,7 @@
     "home": "Home",
     "projectIdeas": "Project Ideas",
     "projects": "Projects",
-    "store": "Store",
+    "store": "Research Labs Equipment",
     "consultations": "Consultations",
     "gallery": "Gallery",
     "aiAssistant": "AI Assistant",
@@ -128,7 +128,7 @@
     "consultantSchedule": "Schedule",
     "consultantProfile": "Profile",
     "reviews": "Reviews",
-    "teachersAndStudents": "Teachers & Students",
+    "professorsAndStudents": "Professors & University Students",
     "adminDashboard": "Admin Dashboard",
     "users": "Users",
     "summerProgram": "Summer Program"
@@ -150,9 +150,9 @@
     "enterName": "Enter your full name",
     "enterPhone": "Enter your phone number",
     "selectRole": "Select your role",
-    "selectSchool": "Select your school",
-    "enterGrade": "Enter your grade",
-    "enterSubject": "Enter your subject",
+    "selectUniversity": "Select your university",
+    "enterYear": "Enter your academic year",
+    "enterMajor": "Enter your major",
     "passwordMismatch": "Passwords do not match",
     "passwordTooShort": "Password must be at least 6 characters",
     "invalidEmail": "Please enter a valid email",
@@ -178,7 +178,7 @@
   "pendingActivation": {
     "title": "Your Account is Under Review",
     "description": {
-      "school": "Thank you for registering on MyProject. Your school account is being reviewed by our administration team.",
+      "university": "Thank you for registering on MyProject. Your university account is being reviewed by our administration team.",
       "consultant": "Thank you for registering on MyProject. Your consultant account is being reviewed by our administration team.",
       "default": "Thank you for registering on MyProject. Your account is being reviewed by our administration team."
     },
@@ -204,8 +204,8 @@
   
   "home": {
     "welcome": "Welcome to MyProject",
-    "tagline": "Modern School Projects Management Platform",
-    "description": "Discover a world of creativity and interactive learning. A comprehensive platform that brings together students, teachers, and schools to achieve outstanding educational projects in science, technology, entrepreneurship, and more. MyProject Platform is the best and easiest way to bring STEAM education and Project-based Learning to your school.",
+    "tagline": "Advanced University Research Projects Platform",
+    "description": "Discover a world of innovation and academic research. A comprehensive platform that brings together university students, professors, and researchers to achieve outstanding research projects in innovation, development, and scientific research. MyProject Platform is the best and easiest way to manage research projects at your university.",
     "exploreIdeas": "Explore Ideas",
     "manageProjects": "Manage Projects",
     "features": {
@@ -262,39 +262,39 @@
   },
   
   "landingPage": {
-    "welcomeMessage": "Our Future Scientists.",
+    "welcomeMessage": "Our Future Researchers & Innovators",
     "stats": {
-      "students": "Registered Students",
-      "projects": "Completed Projects",
-      "teachers": "Teachers & Consultants",
-      "schools": "Partner Schools"
+      "students": "Registered University Students",
+      "projects": "Completed Research Projects",
+      "professors": "Professors & Researchers",
+      "universities": "Partner Universities"
     },
     "projectShowcase": {
-      "title": "Student Project Gallery",
-      "description": "Explore outstanding student projects created using our platform",
+      "title": "University Research Projects Gallery",
+      "description": "Explore outstanding research and innovation projects created by university students",
       "viewMore": "View More Projects",
-      "project1": "Assistant Robot Project",
-      "category1": "Technology",
-      "project2": "Renewable Energy Project",
-      "category2": "Science",
-      "project3": "Educational App",
-      "category3": "Programming",
-      "project4": "Recycling Project",
-      "category4": "Environment"
+      "project1": "Advanced AI System for Medical Diagnosis",
+      "category1": "Artificial Intelligence & Medicine",
+      "project2": "Sustainable Energy Research & Solar Cells",
+      "category2": "Renewable Energy",
+      "project3": "AI-Powered Educational Platform",
+      "category3": "EdTech",
+      "project4": "Technical Solutions for Environmental Sustainability",
+      "category4": "Environment & Sustainability"
     },
     "benefits": {
       "title": "Why Choose MyProject?",
       "benefit1": {
-        "title": "Project-Based Learning",
-        "description": "Develop student skills through practical projects in various fields"
+        "title": "Innovation-Based Research",
+        "description": "Develop university students' research and innovation skills through advanced research projects"
       },
       "benefit2": {
-        "title": "Skills Development",
-        "description": "Cultivate 21st century skills, critical thinking and creativity"
+        "title": "Research Skills Development",
+        "description": "Cultivate scientific research skills, critical thinking and academic creativity"
       },
       "benefit3": {
-        "title": "Learning Community",
-        "description": "Interactive environment connecting students, teachers and consultants"
+        "title": "Academic Research Community",
+        "description": "Interactive research environment connecting university students, professors and researchers"
       }
     },
     "cta": {
@@ -310,15 +310,15 @@
       "copyright": "All rights reserved"
     },
     "testimonials": {
-      "name1": "Sarah Ahmed",
-      "role1": "Science Teacher",
-      "content1": "MyProject platform has completely changed my teaching approach. Students are now more engaged and creative.",
+      "name1": "Dr. Sarah Ahmed",
+      "role1": "Professor of Molecular Physics",
+      "content1": "MyProject platform has transformed our research management approach. University students are now more engaged in scientific research.",
       "name2": "Mohammed Ali",
-      "role2": "High School Student",
-      "content2": "I was able to develop an advanced robot project thanks to the guidance and support available on the platform.",
-      "name3": "Fatima Khalid",
-      "role3": "School Principal",
-      "content3": "The platform helped us organize and manage student projects efficiently and track their progress."
+      "role2": "Engineering Student - Third Year",
+      "content2": "I was able to develop an advanced intelligent energy management system thanks to the academic supervision and research support available.",
+      "name3": "Dr. Fatima Khalid",
+      "role3": "Dean of Engineering Faculty",
+      "content3": "The platform helped us efficiently organize and manage research projects for university students and track their academic progress."
     }
   },
   
@@ -855,8 +855,8 @@
   },
   
   "store": {
-    "title": "Store",
-    "subtitle": "Tools and materials for educational projects",
+    "title": "Research Labs Equipment",
+    "subtitle": "Tools and equipment for university research projects",
     "wishlist": "Wishlist",
     "cart": "Cart",
     "stats": {
