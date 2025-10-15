@@ -32,6 +32,7 @@ export const AddTaskModal: React.FC<AddTaskModalProps> = ({
     assigned_to: '',
     status: 'pending',
     priority: 'medium',
+    start_date: new Date().toISOString().split('T')[0],
     due_date: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,9 +47,14 @@ export const AddTaskModal: React.FC<AddTaskModalProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!formData.title || !formData.due_date) {
-      setError('يرجى إدخال عنوان المهمة وتاريخ الاستحقاق');
+
+    if (!formData.title || !formData.start_date || !formData.due_date) {
+      setError('يرجى إدخال عنوان المهمة وتاريخ البداية وتاريخ الاستحقاق');
+      return;
+    }
+
+    if (new Date(formData.start_date) > new Date(formData.due_date)) {
+      setError('تاريخ البداية يجب أن يكون قبل أو يساوي تاريخ الاستحقاق');
       return;
     }
 
@@ -76,6 +82,7 @@ export const AddTaskModal: React.FC<AddTaskModalProps> = ({
         status: formData.status,
         priority: formData.priority,
         progress: formData.status === 'completed' ? 100 : (formData.status === 'in_progress' ? 50 : 0),
+        start_date: formData.start_date,
         due_date: formData.due_date,
         created_by: user?.id,
       });
@@ -170,6 +177,22 @@ export const AddTaskModal: React.FC<AddTaskModalProps> = ({
             </div>
 
             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                تاريخ البداية *
+              </label>
+              <div className="relative">
+                <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="date"
+                  value={formData.start_date}
+                  onChange={(e) => handleInputChange('start_date', e.target.value)}
+                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 تاريخ الاستحقاق *
               </label>

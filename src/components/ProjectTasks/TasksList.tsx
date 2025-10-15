@@ -11,6 +11,7 @@ interface Task {
   description: string;
   status: string;
   priority: string;
+  start_date: string | null;
   due_date: string | null;
   assigned_to: string | null;
   progress: number;
@@ -140,16 +141,18 @@ const TasksList: React.FC<TasksListProps> = ({ tasks, students, projectId, onTas
                       <User className="w-3 h-3" />
                       <span>المسؤول: {getStudentName(task.assigned_to)}</span>
                     </div>
+                    {task.start_date && (
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        <span>تاريخ البداية: {formatDate(task.start_date)}</span>
+                      </div>
+                    )}
                     {task.due_date && (
                       <div className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
-                        <span>الموعد النهائي: {formatDate(task.due_date)}</span>
+                        <span>تاريخ الاستحقاق: {formatDate(task.due_date)}</span>
                       </div>
                     )}
-                    <div className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      <span>تاريخ الإنشاء: {formatDate(task.created_at)}</span>
-                    </div>
                   </div>
                 </div>
 

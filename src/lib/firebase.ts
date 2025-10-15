@@ -839,8 +839,14 @@ export const createProjectTask = async (taskData: any) => {
       ? Timestamp.fromDate(new Date(taskData.due_date))
       : null;
 
+    // Convert start_date string to Timestamp if provided, otherwise use current date
+    const startDateTimestamp = taskData.start_date
+      ? Timestamp.fromDate(new Date(taskData.start_date))
+      : Timestamp.fromDate(new Date());
+
     const docRef = await addDoc(collection(db, 'project_tasks'), {
       ...taskData,
+      start_date: startDateTimestamp,
       due_date: dueDateTimestamp,
       created_at: serverTimestamp(),
       updated_at: serverTimestamp()
@@ -850,6 +856,7 @@ export const createProjectTask = async (taskData: any) => {
     return {
       id: docRef.id,
       ...taskData,
+      start_date: startDateTimestamp.toDate().toISOString(),
       due_date: dueDateTimestamp ? dueDateTimestamp.toDate().toISOString() : null
     };
   } catch (error) {
@@ -866,6 +873,10 @@ export const updateProjectTask = async (taskId: string, taskData: any) => {
       ...taskData,
       updated_at: serverTimestamp()
     };
+
+    if (taskData.start_date) {
+      updateData.start_date = Timestamp.fromDate(new Date(taskData.start_date));
+    }
 
     if (taskData.due_date) {
       updateData.due_date = Timestamp.fromDate(new Date(taskData.due_date));

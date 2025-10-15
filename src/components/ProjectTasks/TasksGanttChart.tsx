@@ -8,6 +8,7 @@ interface Task {
   description: string;
   status: string;
   priority: string;
+  start_date: string | null;
   due_date: string | null;
   assigned_to: string | null;
   progress: number;
@@ -34,10 +35,14 @@ const TasksGanttChart: React.FC<TasksGanttChartProps> = ({ tasks, students }) =>
   const ganttData = useMemo(() => {
     if (!tasks || tasks.length === 0) return null;
 
-    const tasksWithDates = tasks.filter(task => task.due_date && task.created_at);
+    const tasksWithDates = tasks.filter(task => {
+      const hasStartDate = task.start_date || task.created_at;
+      const hasDueDate = task.due_date;
+      return hasStartDate && hasDueDate;
+    });
     if (tasksWithDates.length === 0) return null;
 
-    const startDates = tasksWithDates.map(t => parseISO(t.created_at));
+    const startDates = tasksWithDates.map(t => parseISO(t.start_date || t.created_at));
     const endDates = tasksWithDates.map(t => parseISO(t.due_date!));
 
     const minDate = min(startDates);
@@ -63,7 +68,7 @@ const TasksGanttChart: React.FC<TasksGanttChartProps> = ({ tasks, students }) =>
         })();
 
     const taskBars = tasksWithDates.map(task => {
-      const taskStart = parseISO(task.created_at);
+      const taskStart = parseISO(task.start_date || task.created_at);
       const taskEnd = parseISO(task.due_date!);
 
       const startOffset = differenceInDays(taskStart, chartStartDate);
@@ -253,11 +258,11 @@ const TasksGanttChart: React.FC<TasksGanttChartProps> = ({ tasks, students }) =>
                                 </span>
                               </div>
                               <div>
-                                <span className="text-gray-400">البداية:</span>
-                                <span className="mr-1">{format(parseISO(task.created_at), 'd/M/yyyy')}</span>
+                                <span className="text-gray-400">تاريخ البداية:</span>
+                                <span className="mr-1">{format(parseISO(task.start_date || task.created_at), 'd/M/yyyy')}</span>
                               </div>
                               <div>
-                                <span className="text-gray-400">النهاية:</span>
+                                <span className="text-gray-400">تاريخ الاستحقاق:</span>
                                 <span className="mr-1">{format(parseISO(task.due_date!), 'd/M/yyyy')}</span>
                               </div>
                               <div className="col-span-2">
