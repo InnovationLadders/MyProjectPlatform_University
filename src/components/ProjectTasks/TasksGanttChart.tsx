@@ -67,6 +67,37 @@ const TasksGanttChart: React.FC<TasksGanttChartProps> = ({ tasks, students }) =>
           return months;
         })();
 
+    const timelinePositions = timelineUnits.map((date, idx) => {
+      const startOffset = differenceInDays(date, chartStartDate);
+      const leftPercent = (startOffset / totalDays) * 100;
+
+      let duration: number;
+      if (viewMode === 'day') {
+        duration = 1;
+      } else if (viewMode === 'week') {
+        const nextUnit = timelineUnits[idx + 1];
+        duration = nextUnit
+          ? differenceInDays(nextUnit, date)
+          : differenceInDays(chartEndDate, date);
+      } else {
+        const monthEnd = endOfMonth(date);
+        const nextMonth = timelineUnits[idx + 1];
+        duration = nextMonth
+          ? differenceInDays(nextMonth, date)
+          : differenceInDays(chartEndDate, date);
+      }
+
+      const widthPercent = (duration / totalDays) * 100;
+
+      return {
+        date,
+        leftPercent,
+        widthPercent,
+        startOffset,
+        duration
+      };
+    });
+
     const taskBars = tasksWithDates.map(task => {
       const taskStart = parseISO(task.start_date || task.created_at);
       const taskEnd = parseISO(task.due_date!);
@@ -96,6 +127,7 @@ const TasksGanttChart: React.FC<TasksGanttChartProps> = ({ tasks, students }) =>
       chartEndDate,
       totalDays,
       timelineUnits,
+      timelinePositions,
       taskBars,
       today: new Date()
     };
@@ -189,12 +221,24 @@ const TasksGanttChart: React.FC<TasksGanttChartProps> = ({ tasks, students }) =>
               <div className="flex">
                 <div className="w-64 font-semibold text-gray-700 text-sm">المهمة</div>
                 <div className="flex-1 relative">
-                  <div className="flex justify-between text-xs text-gray-600">
-                    {ganttData.timelineUnits.map((date, idx) => (
-                      <div key={idx} className="flex-1 text-center border-r border-gray-200 last:border-r-0 py-1">
-                        {viewMode === 'day' && format(date, 'd MMM')}
-                        {viewMode === 'week' && format(date, 'd MMM')}
-                        {viewMode === 'month' && format(date, 'MMM yyyy')}
+                  <div className="relative h-8">
+                    {ganttData.timelinePositions.map((position, idx) => (
+                      <div
+                        key={idx}
+                        className="absolute top-0 h-full text-xs text-gray-600 flex items-center justify-center"
+                        style={{
+                          left: `${position.leftPercent}%`,
+                          width: `${position.widthPercent}%`
+                        }}
+                      >
+                        <div className="text-center py-1">
+                          {viewMode === 'day' && format(position.date, 'd MMM')}
+                          {viewMode === 'week' && format(position.date, 'd MMM')}
+                          {viewMode === 'month' && format(position.date, 'MMM yyyy')}
+                        </div>
+                        {idx < ganttData.timelinePositions.length - 1 && (
+                          <div className="absolute right-0 top-0 bottom-0 w-px bg-gray-200"></div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -218,6 +262,17 @@ const TasksGanttChart: React.FC<TasksGanttChartProps> = ({ tasks, students }) =>
                   </div>
 
                   <div className="flex-1 relative h-12">
+                    {ganttData.timelinePositions.map((position, idx) => (
+                      <div
+                        key={idx}
+                        className="absolute top-0 bottom-0 border-r border-gray-100 last:border-r-0"
+                        style={{
+                          left: `${position.leftPercent}%`,
+                          width: `${position.widthPercent}%`
+                        }}
+                      ></div>
+                    ))}
+
                     <div
                       className="absolute top-0 h-full"
                       style={{
