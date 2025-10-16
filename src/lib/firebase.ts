@@ -211,7 +211,7 @@ export const getAllTeachers = async () => {
     
     return teachersSnapshot.docs.map(doc => ({
       id: doc.id,
-      name: doc.data().name || 'معلم بدون اسم',
+      name: doc.data().name || 'مشرف بدون اسم',
       subject: doc.data().subject,
       school_id: doc.data().school_id,
       ...doc.data()
@@ -233,7 +233,7 @@ export const getTeachersBySchoolId = async (schoolId: string) => {
     
     return teachersSnapshot.docs.map(doc => ({
       id: doc.id,
-      name: doc.data().name || 'معلم بدون اسم',
+      name: doc.data().name || 'مشرف بدون اسم',
       subject: doc.data().subject,
       ...doc.data()
     }));
@@ -1549,7 +1549,7 @@ export const initializeWithSampleData = async () => {
         status: 'active'
       },
       {
-        name: 'معلم اختبار',
+        name: 'مشرف اختبار',
         email: 'teacher@test.com',
         role: 'teacher',
         subject: 'الرياضيات',

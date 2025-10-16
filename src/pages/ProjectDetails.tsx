@@ -767,7 +767,7 @@ const ProjectDetails: React.FC = () => {
             ) : (evaluation || evaluationSaved) ? (
               <EvaluationSummary
                 evaluation={evaluation}
-                teacherName={evaluation?.teacherName || t('common.teacher', 'المعلم')}
+                teacherName={evaluation?.teacherName || t('common.teacher', 'المشرف')}
               />
             ) : (
               <div className="text-center py-8 bg-gray-50 rounded-xl">

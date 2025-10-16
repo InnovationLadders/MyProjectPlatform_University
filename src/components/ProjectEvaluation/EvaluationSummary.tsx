@@ -18,9 +18,9 @@ interface EvaluationSummaryProps {
   teacherName?: string;
 }
 
-export const EvaluationSummary: React.FC<EvaluationSummaryProps> = ({ 
-  evaluation, 
-  teacherName = 'المعلم' 
+export const EvaluationSummary: React.FC<EvaluationSummaryProps> = ({
+  evaluation,
+  teacherName = 'المشرف'
 }) => {
   const { t } = useTranslation();
   

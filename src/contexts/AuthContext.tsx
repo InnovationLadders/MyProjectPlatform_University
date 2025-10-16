@@ -250,7 +250,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             phone_provided: !!userData.phone
           });
         } else if (userData.role === 'teacher') {
-          console.log('👩‍🏫 بيانات المعلم المقدمة:', {
+          console.log('👩‍🏫 بيانات المشرف المقدمة:', {
             subject: userData.subject,
             subject_type: typeof userData.subject,
             subject_provided: !!userData.subject,

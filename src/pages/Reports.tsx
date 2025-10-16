@@ -41,7 +41,7 @@ const getReportTypes = (userRole: string) => {
   } else if (userRole === 'school') {
     return [
       ...baseTypes,
-      { id: 'teachers', name: 'تقارير المعلمين', icon: Users },
+      { id: 'teachers', name: 'تقارير المشرفين', icon: Users },
       { id: 'students', name: 'تقارير الطلاب', icon: Users },
     ];
   } else if (userRole === 'teacher') {
@@ -128,7 +128,7 @@ export const Reports: React.FC = () => {
     },
     {
       key: 'teacher_name',
-      label: 'المعلم المشرف'
+      label: 'المشرف'
     },
     {
       key: 'school_name',
@@ -191,7 +191,7 @@ export const Reports: React.FC = () => {
   const teacherColumns: TableColumn[] = [
     {
       key: 'name',
-      label: 'اسم المعلم',
+      label: 'اسم المشرف',
       render: (value, row) => (
         <div>
           <div className="font-medium text-gray-900">{value}</div>
@@ -245,7 +245,7 @@ export const Reports: React.FC = () => {
     },
     {
       key: 'teachers_count',
-      label: 'عدد المعلمين'
+      label: 'عدد المشرفين'
     },
     {
       key: 'students_count',
@@ -287,7 +287,7 @@ export const Reports: React.FC = () => {
                    project.status === 'draft' ? 'مسودة' : 'مؤرشف',
           'نسبة الإنجاز': `${project.progress}/10`,
           'الدرجة الموزونة': project.weighted_score.toFixed(2),
-          'المعلم المشرف': project.teacher_name,
+          'المشرف': project.teacher_name,
           'المدرسة': project.school_name,
           'عدد الطلاب': project.students_count,
           'تاريخ الإنشاء': formatDate(project.created_at),
@@ -318,7 +318,7 @@ export const Reports: React.FC = () => {
       // Export teachers (if available)
       if (reportsData.teachers.length > 0) {
         const teachersData = reportsData.teachers.map(teacher => ({
-          'اسم المعلم': teacher.name,
+          'اسم المشرف': teacher.name,
           'البريد الإلكتروني': teacher.email,
           'التخصص': teacher.subject,
           'المدرسة': teacher.school_name,
@@ -329,7 +329,7 @@ export const Reports: React.FC = () => {
         }));
         
         const teachersWorksheet = XLSX.utils.json_to_sheet(teachersData);
-        XLSX.utils.book_append_sheet(workbook, teachersWorksheet, 'المعلمين');
+        XLSX.utils.book_append_sheet(workbook, teachersWorksheet, 'المشرفين');
       }
 
       // Export schools (if available)
@@ -338,7 +338,7 @@ export const Reports: React.FC = () => {
           'اسم المدرسة': school.name,
           'البريد الإلكتروني': school.email,
           'عدد المشاريع': school.projects_count,
-          'عدد المعلمين': school.teachers_count,
+          'عدد المشرفين': school.teachers_count,
           'عدد الطلاب': school.students_count,
           'معدل الإنجاز': `${school.completion_rate.toFixed(1)}%`,
           'متوسط التقييم': school.average_rating.toFixed(1)
@@ -597,9 +597,9 @@ export const Reports: React.FC = () => {
           <ReportTable
             data={reportsData.teachers}
             columns={teacherColumns}
-            title="تقرير المعلمين التفصيلي"
-            searchPlaceholder="البحث في المعلمين..."
-            exportFileName="تقرير_المعلمين"
+            title="تقرير المشرفين التفصيلي"
+            searchPlaceholder="البحث في المشرفين..."
+            exportFileName="تقرير_المشرفين"
           />
         )}
 
@@ -694,7 +694,7 @@ export const Reports: React.FC = () => {
               <BookOpen className="w-8 h-8 text-purple-600" />
             </div>
             <h3 className="text-2xl font-bold text-gray-800 mb-2">{reportsData.teachers.length}</h3>
-            <p className="text-gray-600">إجمالي المعلمين</p>
+            <p className="text-gray-600">إجمالي المشرفين</p>
           </div>
           
           {user?.role === 'admin' && (

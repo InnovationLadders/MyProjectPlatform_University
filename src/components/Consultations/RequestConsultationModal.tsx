@@ -261,7 +261,7 @@ export const RequestConsultationModal: React.FC<RequestConsultationModalProps> =
             <div>
               <h4 className="font-medium text-blue-800 mb-1">معلومات مهمة</h4>
               <ul className="text-sm text-blue-700 space-y-1">
-                <li>• سيتم مراجعة طلبك وتعيين معلم مناسب في أقرب وقت</li>
+                <li>• سيتم مراجعة طلبك وتعيين مشرف مناسب في أقرب وقت</li>
                 <li>• سيتم إرسال رابط الاستشارة قبل الموعد بـ 15 دقيقة</li>
                 <li>• يمكنك إلغاء الاستشارة قبل 24 ساعة من الموعد</li>
               </ul>

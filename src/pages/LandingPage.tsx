@@ -223,7 +223,7 @@ export const LandingPage: React.FC = () => {
         </div>
         <div className="bg-white p-6 rounded-lg shadow-sm text-center">
           <div className="text-3xl font-bold text-purple-600 mb-2">20+</div>
-          <div className="text-gray-600">معلم ومستشار</div>
+          <div className="text-gray-600">مشرف ومستشار</div>
         </div>
         <div className="bg-white p-6 rounded-lg shadow-sm text-center">
           <div className="text-3xl font-bold text-orange-600 mb-2">5+</div>
@@ -384,7 +384,7 @@ export const LandingPage: React.FC = () => {
                 <Users className="w-8 h-8 text-purple-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-2">مجتمع تعليمي</h3>
-              <p className="text-gray-600">بيئة تفاعلية تجمع الطلاب والمعلمين والمستشارين في منصة واحدة</p>
+              <p className="text-gray-600">بيئة تفاعلية تجمع الطلاب والمشرفين والمستشارين في منصة واحدة</p>
             </motion.div>
           </div>
         </div>

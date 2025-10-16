@@ -37,7 +37,7 @@ import * as XLSX from 'xlsx';
 const userRoles = [
   { id: 'all', name: 'جميع المستخدمين' },
   { id: 'student', name: 'طلاب', icon: GraduationCap, color: 'bg-blue-500' },
-  { id: 'teacher', name: 'معلمين', icon: BookOpen, color: 'bg-green-500' },
+  { id: 'teacher', name: 'مشرفين', icon: BookOpen, color: 'bg-green-500' },
   { id: 'school', name: 'مدارس', icon: Building, color: 'bg-purple-500' },
   { id: 'consultant', name: 'مستشارين', icon: Briefcase, color: 'bg-orange-500' },
   { id: 'admin', name: 'مديرين', icon: Shield, color: 'bg-red-500' },
@@ -84,7 +84,7 @@ const Users: React.FC = () => {
   const getRoleText = (role: string) => {
     switch (role) {
       case 'student': return 'طالب';
-      case 'teacher': return 'معلم';
+      case 'teacher': return 'مشرف';
       case 'school': return 'مدرسة';
       case 'admin': return 'مدير';
       case 'consultant': return 'مستشار';
@@ -293,7 +293,7 @@ const Users: React.FC = () => {
           </div>
           <div>
             <div className="text-2xl font-bold">{users.filter(u => u.role === 'teacher').length}</div>
-            <div className="text-sm opacity-80">معلمين</div>
+            <div className="text-sm opacity-80">مشرفين</div>
           </div>
           <div>
             <div className="text-2xl font-bold">{users.filter(u => u.role === 'school').length}</div>
@@ -532,7 +532,7 @@ const Users: React.FC = () => {
                       <div className="text-sm text-gray-900">{user.school || 'غير محدد'}</div>
                       {user.role === 'school' && user.studentsCount !== undefined && (
                         <div className="text-xs text-gray-500">
-                          {user.studentsCount} طالب، {user.teachersCount || 0} معلم
+                          {user.studentsCount} طالب، {user.teachersCount || 0} مشرف
                         </div>
                       )}
                     </td>

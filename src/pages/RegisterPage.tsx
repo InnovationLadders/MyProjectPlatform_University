@@ -336,7 +336,7 @@ export const RegisterPage: React.FC = () => {
                     className="sr-only"
                   />
                   <BookOpen className="w-5 h-5" />
-                  <span className="font-medium">معلم</span>
+                  <span className="font-medium">مشرف</span>
                 </label>
                 <label className={`flex items-center justify-center gap-2 p-4 border rounded-xl cursor-pointer transition-colors ${
                   formData.role === 'consultant' ? 'bg-blue-50 border-blue-500 text-blue-700' : 'border-gray-300 hover:bg-gray-50'

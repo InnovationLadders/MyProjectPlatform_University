@@ -364,7 +364,7 @@ export const Gallery: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Users className="w-4 h-4" />
-                  <span>المعلم المشرف: {project.teacher}</span>
+                  <span>المشرف: {project.teacher}</span>
                 </div>
               </div>
 
@@ -631,7 +631,7 @@ export const Gallery: React.FC = () => {
                         </div>
                         
                         <div>
-                          <p className="text-sm text-gray-500">المعلم المشرف</p>
+                          <p className="text-sm text-gray-500">المشرف</p>
                           <p className="font-medium">{selectedProject.teacher}</p>
                         </div>
                         
