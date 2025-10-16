@@ -180,7 +180,7 @@ export const LandingPage: React.FC = () => {
             />
             <img
               src="/PBL-logo.jpg"
-              alt="Project-based Learning Logo"
+              alt="University Project Management Logo"
               className="h-20 rounded-lg shadow-md"
             />
           </div>
