@@ -12,6 +12,7 @@ import i18n from './i18n';
 import { SummerProgramEnrollment } from './pages/SummerProgramEnrollment';
 import { ClasseraCallback } from './pages/auth/ClasseraCallback';
 import { ClasseraLogin } from './pages/auth/ClasseraLogin';
+import LTICallback from './pages/LTICallback';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode; allowedRoles?: string[] }> = ({ 
   children, 
@@ -68,6 +69,9 @@ const AppRoutes: React.FC = () => {
       {/* Classera SSO Routes */}
       <Route path="/auth/classera" element={user ? <Navigate to="/home" /> : <ClasseraLogin />} />
       <Route path="/auth/classera/callback" element={<ClasseraCallback />} />
+
+      {/* LTI 1.3 Callback Route */}
+      <Route path="/lti/callback" element={<LTICallback />} />
       
       <Route path="/pending-activation" element={!user ? <Navigate to="/login" /> : user.status !== 'pending' ? <Navigate to="/" /> : <PendingActivationPage />} />
       
