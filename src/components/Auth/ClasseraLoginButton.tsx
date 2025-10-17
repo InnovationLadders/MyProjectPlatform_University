@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { School, Loader, CircleAlert as AlertCircle } from 'lucide-react';
+import { School, Loader, CircleAlert as AlertCircle, Info } from 'lucide-react';
 
 interface ClasseraLoginButtonProps {
   returnUrl?: string;
@@ -13,10 +13,45 @@ export const ClasseraLoginButton: React.FC<ClasseraLoginButtonProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [serverStatus, setServerStatus] = useState<'checking' | 'online' | 'offline'>('checking');
+
+  // Check if backend server is running (in development only)
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      const checkServer = async () => {
+        try {
+          const response = await fetch('http://localhost:3001/health', {
+            method: 'GET',
+            signal: AbortSignal.timeout(2000)
+          });
+          if (response.ok) {
+            setServerStatus('online');
+          } else {
+            setServerStatus('offline');
+          }
+        } catch (err) {
+          console.log('[ClasseraLoginButton] Backend server not responding');
+          setServerStatus('offline');
+        }
+      };
+
+      checkServer();
+      const interval = setInterval(checkServer, 10000); // Check every 10 seconds
+      return () => clearInterval(interval);
+    } else {
+      setServerStatus('online'); // Assume online in production
+    }
+  }, []);
 
   const handleLogin = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    // Check if server is offline in development
+    if (import.meta.env.DEV && serverStatus === 'offline') {
+      setError('الخادم الخلفي غير متصل. يرجى تشغيل الخادم أولاً.');
+      return;
+    }
 
     try {
       setIsLoading(true);
@@ -58,11 +93,38 @@ export const ClasseraLoginButton: React.FC<ClasseraLoginButtonProps> = ({
 
   return (
     <div className="space-y-3">
+      {/* Server Status Warning (Development Only) */}
+      {import.meta.env.DEV && serverStatus === 'offline' && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-lg text-sm"
+        >
+          <div className="flex items-start gap-2">
+            <Info className="w-5 h-5 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <div className="font-semibold mb-1">الخادم الخلفي غير متصل</div>
+              <div className="text-xs">
+                لتسجيل الدخول عبر Classera، يجب تشغيل الخادم الخلفي أولاً:
+                <br />
+                <code className="bg-amber-100 px-2 py-1 rounded mt-1 inline-block">npm run server:dev</code>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {import.meta.env.DEV && serverStatus === 'checking' && (
+        <div className="text-xs text-gray-500 text-center">
+          جاري التحقق من حالة الخادم...
+        </div>
+      )}
+
       <motion.button
         whileHover={{ scale: isLoading ? 1 : 1.02 }}
         whileTap={{ scale: isLoading ? 1 : 0.98 }}
         onClick={handleLogin}
-        disabled={isLoading}
+        disabled={isLoading || (import.meta.env.DEV && serverStatus === 'offline')}
         className={`w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-xl font-medium hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
       >
         {isLoading ? (
@@ -91,7 +153,7 @@ export const ClasseraLoginButton: React.FC<ClasseraLoginButtonProps> = ({
         </motion.div>
       )}
 
-      {!error && !isLoading && (
+      {!error && !isLoading && serverStatus === 'online' && (
         <div className="text-xs text-gray-500 text-center">
           <div className="flex items-center justify-center gap-1 mb-1">
             <School className="w-3 h-3" />
