@@ -1,10 +1,20 @@
 /**
+ * @deprecated This file is deprecated and should be removed.
+ * The webview popup approach has been replaced with LTI 1.3 authentication.
+ * Webview integration is no longer used.
+ *
+ * This file can be safely deleted as it's no longer used in the application.
+ */
+
+/**
  * Utility functions for handling Classera webview integration
+ * @deprecated
  */
 
 /**
  * Inject script into Classera webview to handle authentication
  * This script should be injected into the webview popup to capture the auth token
+ * @deprecated
  */
 export const getClasseraWebviewScript = () => {
   return `

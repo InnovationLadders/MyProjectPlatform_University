@@ -1,3 +1,11 @@
+/**
+ * @deprecated This file is deprecated and should be removed.
+ * The webview callback approach has been replaced with LTI 1.3 authentication.
+ * See /pages/LTICallback.tsx for the new implementation.
+ *
+ * This file can be safely deleted as it's no longer used in the application.
+ */
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';

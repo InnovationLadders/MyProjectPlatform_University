@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { School, ArrowRight, CircleCheck as CheckCircle, Users, BookOpen, Award, Info, ExternalLink } from 'lucide-react';
+import { School, ArrowRight, CircleCheck as CheckCircle, Users, BookOpen, Award, Info } from 'lucide-react';
 import { ClasseraLoginButton } from '../../components/Auth/ClasseraLoginButton';
-import { CLASSERA_CONFIG } from '../../lib/classera';
 
 export const ClasseraLogin: React.FC = () => {
-  const [showTestAccounts, setShowTestAccounts] = useState(false);
-
   const features = [
     {
       icon: Users,
       title: 'تسجيل دخول موحد',
-      description: 'استخدم حساب Classera الخاص بك للوصول المباشر'
+      description: 'استخدم حساب Classera الخاص بك للوصول المباشر باستخدام LTI 1.3'
     },
     {
       icon: BookOpen,
@@ -25,43 +22,6 @@ export const ClasseraLogin: React.FC = () => {
       description: 'مشاركة درجات ونتائج المشاريع مع Classera'
     }
   ];
-
-  const testAccounts = {
-    production: {
-      enabled: [
-        { username: 'Hasan4ts0004', role: 'Admin', password: 'Class@987' },
-        { username: 'hasan4s0007', role: 'Student', password: 'Class@987' },
-        { username: 'Hasan4t0002', role: 'Teacher', password: 'Class@987' },
-        { username: 'LtmStdPartner', role: 'Student', password: 'Class@987' },
-        { username: 'LtmTeacherPartner', role: 'Teacher', password: 'Class@987' },
-        { username: 'LtmSupervisorPartner', role: 'Supervisor', password: 'Class@987' }
-      ],
-      disabled: [
-        { username: 'cera192admin0', role: 'Admin', password: 'Class@987' },
-        { username: 'cera192s0002', role: 'Student', password: 'Class@987' },
-        { username: 'cera192t0003', role: 'Teacher', password: 'Class@987' }
-      ]
-    },
-    staging: {
-      enabled: [
-        { username: 'aed2ts0001', role: 'Admin', password: 'Class@987' },
-        { username: 'aed2s1228', role: 'Student', password: 'Class@987' },
-        { username: 'aed2s0003', role: 'Student', password: 'Class@987' },
-        { username: 'aed2t0001', role: 'Teacher', password: 'Class@987' },
-        { username: 'LtmStdPartner', role: 'Student', password: 'Class@987' },
-        { username: 'LtmTeacherPartner', role: 'Teacher', password: 'Class@987' },
-        { username: 'LtmSupervisorPartner', role: 'Supervisor', password: 'Class@987' }
-      ],
-      disabled: [
-        { username: 'arabi_hu_admin', role: 'Admin', password: 'Class@987' },
-        { username: 'arabi_hu', role: 'Teacher', password: 'Class@987' },
-        { username: 'arabi_hu_std', role: 'Student', password: 'Class@987' }
-      ]
-    }
-  };
-
-  const currentEnvironment = CLASSERA_CONFIG.IS_PRODUCTION ? 'production' : 'staging';
-  const currentAccounts = testAccounts[currentEnvironment];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 flex items-center justify-center p-4">
@@ -113,16 +73,16 @@ export const ClasseraLogin: React.FC = () => {
               ))}
             </div>
 
-            {/* Environment Info */}
+            {/* LTI Info */}
             <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-xl">
               <div className="flex items-start gap-3">
                 <Info className="w-5 h-5 text-blue-500 mt-1 flex-shrink-0" />
                 <div className="text-right">
-                  <h4 className="font-medium text-blue-800 mb-1">معلومات البيئة</h4>
+                  <h4 className="font-medium text-blue-800 mb-1">معلومات الاتصال</h4>
                   <p className="text-blue-700 text-sm">
-                    البيئة الحالية: {CLASSERA_CONFIG.IS_PRODUCTION ? 'الإنتاج' : 'التطوير'}
+                    نستخدم بروتوكول LTI 1.3 للمصادقة الآمنة مع Classera
                     <br />
-                    المضيف: {CLASSERA_CONFIG.HOST}
+                    اتصال مشفر ومصادق عليه بالكامل
                   </p>
                 </div>
               </div>
@@ -174,77 +134,6 @@ export const ClasseraLogin: React.FC = () => {
               </p>
             </div>
 
-            {/* Test Accounts Section */}
-            {import.meta.env.DEV && (
-              <div className="mt-6">
-                <button
-                  onClick={() => setShowTestAccounts(!showTestAccounts)}
-                  className="w-full text-center text-sm text-gray-500 hover:text-gray-700 transition-colors"
-                >
-                  {showTestAccounts ? 'إخفاء' : 'عرض'} حسابات الاختبار
-                </button>
-                
-                {showTestAccounts && (
-                  <div className="mt-4 p-4 bg-gray-50 rounded-xl">
-                    <h4 className="font-medium text-gray-800 mb-3">
-                      حسابات الاختبار - {currentEnvironment === 'production' ? 'الإنتاج (me.classera.com)' : 'التطوير (partners-stg.classera.com)'}
-                    </h4>
-                    
-                    <div className="space-y-3">
-                      <div>
-                        <h5 className="text-sm font-medium text-green-700 mb-2">الحسابات المفعلة:</h5>
-                        <div className="space-y-1">
-                          {currentAccounts.enabled.map((account, index) => (
-                            <div key={index} className="text-xs bg-green-100 text-green-800 p-2 rounded">
-                              <strong>{account.username}</strong> ({account.role}) - {account.password}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <h5 className="text-sm font-medium text-red-700 mb-2">الحسابات المعطلة:</h5>
-                        <div className="space-y-1">
-                          {currentAccounts.disabled.map((account, index) => (
-                            <div key={index} className="text-xs bg-red-100 text-red-800 p-2 rounded">
-                              <strong>{account.username}</strong> ({account.role}) - {account.password}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded">
-                      <p className="text-xs text-yellow-800">
-                        <strong>ملاحظة:</strong> استخدم الحسابات المفعلة فقط للاختبار. 
-                        الحسابات المعطلة ستظهر رسالة خطأ.
-                      </p>
-                    </div>
-                    
-                    <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded">
-                      <p className="text-xs text-blue-800">
-                        <strong>إعدادات API:</strong><br/>
-                        Partner Name: {CLASSERA_CONFIG.PARTNER_NAME}<br/>
-                        Client ID: {CLASSERA_CONFIG.CLIENT_ID}<br/>
-                        Platform Issuer: {CLASSERA_CONFIG.PLATFORM_ISSUER}
-                      </p>
-                    </div>
-                    
-                    <div className="mt-3 text-center">
-                      <a
-                        href={CLASSERA_CONFIG.WEBVIEW_LOGIN_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800"
-                      >
-                        فتح صفحة تسجيل الدخول مباشرة
-                        <ExternalLink className="w-3 h-3" />
-                      </a>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
 
             {/* Security Notice */}
             <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-xl">

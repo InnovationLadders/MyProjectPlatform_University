@@ -10,7 +10,6 @@ import { LandingPage } from './pages/LandingPage'; // Import the new LandingPage
 import { PendingActivationPage } from './pages/PendingActivationPage';
 import i18n from './i18n';
 import { SummerProgramEnrollment } from './pages/SummerProgramEnrollment';
-import { ClasseraCallback } from './pages/auth/ClasseraCallback';
 import { ClasseraLogin } from './pages/auth/ClasseraLogin';
 import LTICallback from './pages/LTICallback';
 
@@ -66,9 +65,8 @@ const AppRoutes: React.FC = () => {
       <Route path="/login" element={user ? <Navigate to="/home" /> : <LoginPage />} />
       <Route path="/register" element={user ? <Navigate to="/home" /> : <RegisterPage />} />
       
-      {/* Classera SSO Routes */}
+      {/* Classera LTI 1.3 Login Route */}
       <Route path="/auth/classera" element={user ? <Navigate to="/home" /> : <ClasseraLogin />} />
-      <Route path="/auth/classera/callback" element={<ClasseraCallback />} />
 
       {/* LTI 1.3 Callback Route */}
       <Route path="/lti/callback" element={<LTICallback />} />

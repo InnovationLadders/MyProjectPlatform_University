@@ -1,3 +1,11 @@
+/**
+ * @deprecated This file is deprecated and should be removed.
+ * The popup-based webview approach has been replaced with LTI 1.3 authentication.
+ * Popup handling is no longer used.
+ *
+ * This file can be safely deleted as it's no longer used in the application.
+ */
+
 interface PopupConfig {
   url: string;
   width?: number;

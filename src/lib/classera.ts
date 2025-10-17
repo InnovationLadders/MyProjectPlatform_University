@@ -607,7 +607,37 @@ export const verifyClasseraUser = async (authToken: string): Promise<ClasseraApi
 };
 
 /**
- * Handle complete Classera login flow
+ * Initiate LTI 1.3 Login Flow
+ * This redirects to the backend LTI login endpoint which handles the OpenID Connect flow
+ */
+export const initiateLTI13Login = (returnUrl: string = '/home'): void => {
+  console.log('[Classera] Initiating LTI 1.3 login flow');
+
+  const apiUrl = import.meta.env.DEV
+    ? 'http://localhost:3001/api/lti/login'
+    : '/api/lti/login';
+
+  const targetLinkUri = import.meta.env.DEV
+    ? 'http://localhost:3001/api/lti/launch'
+    : `${window.location.origin}/api/lti/launch`;
+
+  const params = new URLSearchParams({
+    iss: CLASSERA_CONFIG.PLATFORM_ISSUER,
+    client_id: CLASSERA_CONFIG.CLIENT_ID,
+    target_link_uri: targetLinkUri,
+    login_hint: 'user_login',
+    lti_deployment_id: CLASSERA_CONFIG.DEPLOYMENT_ID
+  });
+
+  const loginUrl = `${apiUrl}?${params.toString()}`;
+
+  console.log('[Classera] Redirecting to:', loginUrl);
+  window.location.href = loginUrl;
+};
+
+/**
+ * Handle complete Classera login flow (DEPRECATED - Use initiateLTI13Login instead)
+ * @deprecated This webview approach is deprecated. Use initiateLTI13Login for LTI 1.3 flow
  */
 export const handleClasseraLogin = async (): Promise<void> => {
   try {

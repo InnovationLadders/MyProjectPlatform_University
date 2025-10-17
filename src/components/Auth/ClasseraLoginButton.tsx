@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { School, ExternalLink, Loader, CircleAlert as AlertCircle } from 'lucide-react';
-import { handleClasseraLogin } from '../../lib/classera';
+import { School, Loader, CircleAlert as AlertCircle } from 'lucide-react';
 
 interface ClasseraLoginButtonProps {
   returnUrl?: string;
@@ -9,68 +8,51 @@ interface ClasseraLoginButtonProps {
 }
 
 export const ClasseraLoginButton: React.FC<ClasseraLoginButtonProps> = ({
-  returnUrl,
+  returnUrl = '/home',
   className = ''
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [progress, setProgress] = useState<string>('');
-  const [showPopupHelp, setShowPopupHelp] = useState(false);
-  const [attemptCount, setAttemptCount] = useState(0);
-
-  const getErrorMessage = (err: Error): string => {
-    const errorMessages: Record<string, string> = {
-      'POPUP_BLOCKED': 'فشل في فتح نافذة تسجيل الدخول. يرجى السماح بالنوافذ المنبثقة والمحاولة مرة أخرى.',
-      'POPUP_CLOSED': 'تم إغلاق النافذة قبل إكمال تسجيل الدخول. يرجى المحاولة مرة أخرى وعدم إغلاق النافذة.',
-      'TIMEOUT': 'انتهت مهلة تسجيل الدخول (5 دقائق). يرجى المحاولة مرة أخرى.',
-      'INVALID_TOKEN': 'تم استلام بيانات مصادقة غير صالحة. يرجى المحاولة مرة أخرى.',
-      'AUTHENTICATION_FAILED': 'فشل في تسجيل الدخول. يرجى التحقق من بيانات الاعتماد والمحاولة مرة أخرى.'
-    };
-
-    return errorMessages[err.message] || err.message || 'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.';
-  };
 
   const handleLogin = async (e: React.MouseEvent) => {
-    // Prevent default and stop propagation to ensure we're in a user gesture
     e.preventDefault();
     e.stopPropagation();
 
     try {
       setIsLoading(true);
       setError(null);
-      setProgress('جاري فتح نافذة تسجيل الدخول...');
-      setAttemptCount(prev => prev + 1);
 
-      console.log('[ClasseraLoginButton] Starting login process, attempt:', attemptCount + 1);
+      console.log('[ClasseraLoginButton] Initiating LTI 1.3 login');
 
-      await handleClasseraLogin();
+      // Determine API URL based on environment
+      const apiUrl = import.meta.env.DEV
+        ? 'http://localhost:3001/api/lti/login'
+        : '/api/lti/login';
 
-      setProgress('تم تسجيل الدخول بنجاح!');
-      console.log('[ClasseraLoginButton] Login completed successfully');
+      // Build target link URI for LTI launch
+      const targetLinkUri = import.meta.env.DEV
+        ? 'http://localhost:3001/api/lti/launch'
+        : `${window.location.origin}/api/lti/launch`;
 
-      if (returnUrl) {
-        window.location.href = returnUrl;
-      }
+      // Build LTI login initiation request parameters
+      const params = new URLSearchParams({
+        iss: 'https://partners.classera.com',
+        client_id: '5ee30a16-c764-47d1-8314-effae92c950a',
+        target_link_uri: targetLinkUri,
+        login_hint: 'user_login',
+        lti_deployment_id: '27'
+      });
+
+      const loginUrl = `${apiUrl}?${params.toString()}`;
+
+      console.log('[ClasseraLoginButton] Redirecting to LTI login:', loginUrl);
+
+      // Redirect to backend LTI login endpoint
+      window.location.href = loginUrl;
     } catch (err) {
       console.error('[ClasseraLoginButton] Login failed:', err);
-
-      if (err instanceof Error) {
-        const errorMsg = getErrorMessage(err);
-        setError(errorMsg);
-
-        if (err.message === 'POPUP_BLOCKED') {
-          setShowPopupHelp(true);
-
-          if (attemptCount >= 1) {
-            setError(errorMsg + '\n\nإذا استمرت المشكلة، يمكنك استخدام تسجيل الدخول العادي.');
-          }
-        }
-      } else {
-        setError('حدث خطأ في تسجيل الدخول. يرجى المحاولة مرة أخرى.');
-      }
-    } finally {
+      setError('حدث خطأ في تسجيل الدخول. يرجى المحاولة مرة أخرى.');
       setIsLoading(false);
-      setProgress('');
     }
   };
 
@@ -86,13 +68,12 @@ export const ClasseraLoginButton: React.FC<ClasseraLoginButtonProps> = ({
         {isLoading ? (
           <>
             <Loader className="w-5 h-5 animate-spin" />
-            <span>{progress || 'جاري تسجيل الدخول...'}</span>
+            <span>جاري تسجيل الدخول عبر Classera...</span>
           </>
         ) : (
           <>
             <School className="w-5 h-5" />
             <span>تسجيل الدخول عبر Classera</span>
-            <ExternalLink className="w-4 h-4" />
           </>
         )}
       </motion.button>
@@ -105,19 +86,7 @@ export const ClasseraLoginButton: React.FC<ClasseraLoginButtonProps> = ({
         >
           <div className="flex items-start gap-2">
             <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-            <div className="flex-1">
-              <div className="whitespace-pre-line">{error}</div>
-              {showPopupHelp && (
-                <div className="mt-2 pt-2 border-t border-red-200">
-                  <p className="font-medium mb-1">كيفية السماح بالنوافذ المنبثقة:</p>
-                  <ul className="text-xs space-y-1 mr-4 list-disc">
-                    <li>انقر على أيقونة القفل أو المعلومات في شريط العنوان</li>
-                    <li>ابحث عن "النوافذ المنبثقة" وقم بتفعيلها</li>
-                    <li>أعد تحميل الصفحة وحاول مرة أخرى</li>
-                  </ul>
-                </div>
-              )}
-            </div>
+            <div className="flex-1">{error}</div>
           </div>
         </motion.div>
       )}
@@ -125,30 +94,13 @@ export const ClasseraLoginButton: React.FC<ClasseraLoginButtonProps> = ({
       {!error && !isLoading && (
         <div className="text-xs text-gray-500 text-center">
           <div className="flex items-center justify-center gap-1 mb-1">
-            <ExternalLink className="w-3 h-3" />
-            <span>سيتم فتح نافذة منبثقة لتسجيل الدخول عبر Classera</span>
+            <School className="w-3 h-3" />
+            <span>تسجيل دخول آمن باستخدام LTI 1.3</span>
           </div>
-          <div className="text-amber-600 font-medium">
-            يرجى السماح بالنوافذ المنبثقة في المتصفح
+          <div className="text-green-600 font-medium">
+            سيتم إعادة توجيهك إلى Classera
           </div>
         </div>
-      )}
-
-      {isLoading && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm"
-        >
-          <div className="font-bold mb-2 text-center">تعليمات مهمة:</div>
-          <ol className="text-xs space-y-2 mr-4" style={{ listStyleType: 'decimal' }}>
-            <li>أكمل تسجيل الدخول في النافذة المنبثقة</li>
-            <li className="font-bold text-green-800">
-              بعد نجاح تسجيل الدخول، أغلق النافذة المنبثقة يدوياً
-            </li>
-            <li>سيتم تسجيل دخولك تلقائياً في هذه الصفحة</li>
-          </ol>
-        </motion.div>
       )}
     </div>
   );
