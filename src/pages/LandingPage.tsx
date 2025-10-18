@@ -101,7 +101,7 @@ export const LandingPage: React.FC = () => {
       name: 'محمد علي',
       role: 'طالب هندسة - السنة الثالثة',
       content: 'تمكنت من تطوير نظام ذكي متطور لإدارة الطاقة بفضل الإشراف الأكاديمي والدعم البحثي المتاح.',
-      avatar: 'https://images.pexels.com/photos/14267043/pexels-photo-14267043.jpeg?auto=compress&cs=tinysrgb&w=150',
+      avatar: 'https://images.pexels.com/photos/2282451/pexels-photo-2282451.jpeg?auto=compress&cs=tinysrgb&w=150',
       rating: 5
     },
     {
