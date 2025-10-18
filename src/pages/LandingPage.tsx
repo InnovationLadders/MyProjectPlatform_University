@@ -168,21 +168,13 @@ export const LandingPage: React.FC = () => {
           </div>
           
           <div className="flex items-center justify-center gap-6 mb-6">
-            <img
-              src="/STEAM-Education_logo.jpg"
-              alt="STEAM Education - Science Technology Engineering Arts Mathematics"
-              className="h-20 rounded-lg shadow-md"
-            />
+   
             <img
               src="/mashroui-logo.png"
               alt={t('appName')}
               className="h-24 drop-shadow-lg"
             />
-            <img
-              src="/PBL-logo.jpg"
-              alt="University Project Management Logo"
-              className="h-20 rounded-lg shadow-md"
-            />
+
           </div>
           <h1 className="text-5xl font-extrabold mb-4 leading-tight">
             <span className="block text-2xl font-medium mb-2 text-blue-100">
