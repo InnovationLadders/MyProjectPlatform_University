@@ -101,14 +101,14 @@ export const LandingPage: React.FC = () => {
       name: 'محمد علي',
       role: 'طالب هندسة - السنة الثالثة',
       content: 'تمكنت من تطوير نظام ذكي متطور لإدارة الطاقة بفضل الإشراف الأكاديمي والدعم البحثي المتاح.',
-      avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150',
+      avatar: 'https://images.pexels.com/photos/14267043/pexels-photo-14267043.jpeg?auto=compress&cs=tinysrgb&w=150',
       rating: 5
     },
     {
-      name: 'د. فاطمة خالد',
-      role: 'عميدة كلية الهندسة',
+      name: 'د. سعيد صالح',
+      role: 'المشرف على المشاريع',
       content: 'المنصة ساعدتنا في تنظيم وإدارة المشاريع البحثية للطلاب الجامعيين بكفاءة عالية ومتابعة تقدمهم الأكاديمي.',
-      avatar: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=150',
+      avatar: 'https://images.pexels.com/photos/14267043/pexels-photo-14267043.jpeg?auto=compress&cs=tinysrgb&w=150',
       rating: 5
     },
   ];
