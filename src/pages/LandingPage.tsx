@@ -235,30 +235,30 @@ export const LandingPage: React.FC = () => {
       <div className="py-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="relative overflow-hidden rounded-lg shadow-md group">
-            <img 
-              src="https://images.pexels.com/photos/9242852/pexels-photo-9242852.jpeg?auto=compress&cs=tinysrgb&w=600" 
-              alt="Assistant Robot Project" 
+            <img
+              src="https://images.pexels.com/photos/2599244/pexels-photo-2599244.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              alt="Advanced Robotics and AI Engineering Project"
               className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
             />
           </div>
           <div className="relative overflow-hidden rounded-lg shadow-md group">
-            <img 
-              src="https://images.pexels.com/photos/7869033/pexels-photo-7869033.jpeg?auto=compress&cs=tinysrgb&w=600" 
-              alt="Renewable Energy Project" 
+            <img
+              src="https://images.pexels.com/photos/356036/pexels-photo-356036.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              alt="Sustainable Energy Engineering and Solar Technology Research"
               className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
             />
           </div>
           <div className="relative overflow-hidden rounded-lg shadow-md group">
-            <img 
-              src="https://images.pexels.com/photos/8471793/pexels-photo-8471793.jpeg?auto=compress&cs=tinysrgb&w=600" 
-              alt="Educational App" 
+            <img
+              src="https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              alt="Computer Science and Software Development Research"
               className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
             />
           </div>
           <div className="relative overflow-hidden rounded-lg shadow-md group">
-            <img 
-              src="https://images.pexels.com/photos/4705626/pexels-photo-4705626.jpeg?auto=compress&cs=tinysrgb&w=600" 
-              alt="Recycling Project" 
+            <img
+              src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              alt="Biomedical Engineering and Laboratory Research"
               className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
             />
           </div>
