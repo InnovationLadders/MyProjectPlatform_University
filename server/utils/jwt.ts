@@ -1,31 +1,53 @@
 import * as jose from 'jose';
 import crypto from 'crypto';
 
-let privateKey: any;
-let publicKey: any;
+let privateKey: jose.KeyLike | undefined;
+let publicKey: jose.KeyLike | undefined;
 let jwksCache: any = null;
 
 const KID = '68d8c42617d92';
 
-export async function initializeKeys() {
-  const privateKeyPem = process.env.LTI_PRIVATE_KEY;
+function sanitizePem(pem?: string): string | undefined {
+  if (!pem) return undefined;
+  let s = pem.trim();
+  // remove surrounding quotes if present
+  if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'"))) {
+    s = s.slice(1, -1);
+  }
+  // convert escaped newlines to real newlines
+  s = s.replace(/\\n/g, '\n');
+  return s;
+}
 
-  if (!privateKeyPem) {
-    console.warn('LTI_PRIVATE_KEY not found in environment. Generating new key pair...');
+export async function initializeKeys() {
+  const raw = process.env.LTI_PRIVATE_KEY;
+  const privateKeyPem = sanitizePem(raw);
+
+  // If not provided or clearly a placeholder or too short, generate a new key pair
+  if (!privateKeyPem || privateKeyPem.includes('...') || privateKeyPem.length < 100) {
+    console.warn('LTI_PRIVATE_KEY not found or invalid in environment. Generating new key pair...');
     await generateAndStoreKeys();
     return;
   }
 
   try {
+    // Import private key into jose (expects PKCS#8 PEM for importPKCS8)
     privateKey = await jose.importPKCS8(privateKeyPem, 'RS256');
-    publicKey = await jose.importSPKI(
-      await exportPublicKey(privateKeyPem),
-      'RS256'
-    );
+
+    // Export the corresponding public key (SPKI PEM) using Node crypto and import into jose
+    const publicSpkiPem = exportPublicKey(privateKeyPem);
+    publicKey = await jose.importSPKI(publicSpkiPem, 'RS256');
+
     console.log('RSA keys loaded successfully');
   } catch (error) {
     console.error('Failed to load RSA keys:', error);
-    throw new Error('Failed to initialize RSA keys');
+    console.warn('Attempting to generate a new key pair to recover...');
+    try {
+      await generateAndStoreKeys();
+    } catch (genErr) {
+      console.error('Failed to generate fallback keys:', genErr);
+      throw new Error('Failed to initialize RSA keys');
+    }
   }
 }
 
@@ -43,20 +65,26 @@ async function generateAndStoreKeys() {
   });
 
   console.log('\n=== GENERATED RSA PRIVATE KEY ===');
-  console.log('Store this in Google Secret Manager as LTI_PRIVATE_KEY:');
-  console.log(privKey);
+  console.log('Store this in Google Secret Manager / .env as LTI_PRIVATE_KEY (PEM with escaped newlines):');
+  // show env-friendly string with \n so user can paste directly
+  const envSafe = privKey.replace(/\n/g, '\\n');
+  console.log(`LTI_PRIVATE_KEY="${envSafe}\n"`);
   console.log('=================================\n');
 
+  // import into jose for runtime usage
   privateKey = await jose.importPKCS8(privKey, 'RS256');
   publicKey = await jose.importSPKI(pubKey, 'RS256');
 }
 
 function exportPublicKey(privateKeyPem: string): string {
-  const keyObject = crypto.createPrivateKey(privateKeyPem);
-  return keyObject.export({
-    type: 'spki',
-    format: 'pem'
-  }).toString();
+  // Create a KeyObject from the private key PEM
+  // Use an object form to be explicit about format
+  const privateKeyObj = crypto.createPrivateKey({ key: privateKeyPem, format: 'pem' });
+  // Derive the public key from the private key object
+  const publicKeyObj = crypto.createPublicKey(privateKeyObj);
+  // Export the public key as SPKI PEM
+  const publicSpkiPem = publicKeyObj.export({ type: 'spki', format: 'pem' });
+  return typeof publicSpkiPem === 'string' ? publicSpkiPem : publicSpkiPem.toString();
 }
 
 export async function generateJWKS(): Promise<any> {
@@ -68,7 +96,7 @@ export async function generateJWKS(): Promise<any> {
     await initializeKeys();
   }
 
-  const jwk = await jose.exportJWK(publicKey);
+  const jwk = await jose.exportJWK(publicKey as jose.KeyLike);
 
   jwksCache = {
     keys: [
@@ -93,7 +121,7 @@ export async function signJWT(payload: any, expiresIn: string = '1h'): Promise<s
     .setProtectedHeader({ alg: 'RS256', kid: KID, typ: 'JWT' })
     .setIssuedAt()
     .setExpirationTime(expiresIn)
-    .sign(privateKey);
+    .sign(privateKey as jose.KeyLike);
 
   return jwt;
 }

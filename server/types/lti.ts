@@ -1,12 +1,18 @@
+// export interface LTILoginRequest {
+//   iss: string;
+//   login_hint: string;
+//   target_link_uri: string;
+//   lti_message_hint?: string;
+//   client_id: string;
+//   lti_deployment_id?: string;
+// }
 export interface LTILoginRequest {
-  iss: string;
-  login_hint: string;
-  target_link_uri: string;
+  iss?: string;
+  login_hint?: string;
+  target_link_uri?: string;
   lti_message_hint?: string;
-  client_id: string;
-  lti_deployment_id?: string;
+  client_id?: string;
 }
-
 export interface LTISession {
   nonce: string;
   state: string;

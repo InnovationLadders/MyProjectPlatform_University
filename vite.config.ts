@@ -10,11 +10,13 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        // target: 'http://localhost:3001',
+        target: 'http://104.250.236.79:3001/',
         changeOrigin: true
       },
       '/lti/launch': {
-        target: 'http://localhost:3001',
+        // target: 'http://localhost:3001',
+        target: 'http://104.250.236.79:3001/',
         changeOrigin: true
       }
     }

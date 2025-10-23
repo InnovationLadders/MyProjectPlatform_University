@@ -614,11 +614,13 @@ export const initiateLTI13Login = (returnUrl: string = '/home'): void => {
   console.log('[Classera] Initiating LTI 1.3 login flow');
 
   const apiUrl = import.meta.env.DEV
-    ? 'http://localhost:3001/api/lti/login'
+    // ? 'http://localhost:3001/api/lti/login'
+    ? 'http://104.250.236.79:3001/api/lti/login'
     : '/api/lti/login';
 
   const targetLinkUri = import.meta.env.DEV
-    ? 'http://localhost:3001/api/lti/launch'
+    // ? 'http://localhost:3001/api/lti/launch'
+    ? 'http://104.250.236.79:3001/api/lti/launch'
     : `${window.location.origin}/api/lti/launch`;
 
   const params = new URLSearchParams({

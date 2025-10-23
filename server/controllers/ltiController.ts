@@ -20,9 +20,67 @@ const CLASSERA_ISSUER = 'https://partners.classera.com';
 const CLASSERA_AUTH_URL = 'https://partners.classera.com/automation_auth';
 const CLASSERA_JWKS_URL = 'https://partners.classera.com/.well-known/jwks.json';
 
+// export async function handleLogin(req: Request, res: Response, next: NextFunction) {
+//   try {
+//     const { iss, login_hint, target_link_uri, lti_message_hint, client_id }: LTILoginRequest = req.body;
+
+//     if (!iss || !login_hint || !target_link_uri || !client_id) {
+//       throw createError('Missing required parameters', 400);
+//     }
+
+//     if (iss !== CLASSERA_ISSUER) {
+//       throw createError('Invalid issuer', 400);
+//     }
+
+//     const expectedClientId = process.env.CLASSERA_CLIENT_ID;
+//     if (client_id !== expectedClientId) {
+//       throw createError('Invalid client_id', 400);
+//     }
+
+//     const nonce = generateNonce();
+//     const state = generateState();
+
+//     await createLTISession(nonce, state);
+
+//     const authParams = new URLSearchParams({
+//       scope: 'openid',
+//       response_type: 'id_token',
+//       response_mode: 'form_post',
+//       prompt: 'none',
+//       client_id: client_id,
+//       redirect_uri: target_link_uri,
+//       login_hint: login_hint,
+//       state: state,
+//       nonce: nonce,
+//       ...(lti_message_hint && { lti_message_hint })
+//     });
+
+//     const redirectUrl = `${CLASSERA_AUTH_URL}?${authParams.toString()}`;
+
+//     console.log('[LTI Login] Redirecting to Classera', {
+//       nonce,
+//       state,
+//       login_hint,
+//       timestamp: new Date().toISOString()
+//     });
+
+//     res.redirect(redirectUrl);
+//   } catch (error) {
+//     next(error);
+//   }
+// }
 export async function handleLogin(req: Request, res: Response, next: NextFunction) {
   try {
-    const { iss, login_hint, target_link_uri, lti_message_hint, client_id }: LTILoginRequest = req.body;
+    // Handle both GET (query params) and POST (body)
+    const params = req.method === 'GET' ? req.query : req.body;
+    
+    const { 
+      iss, 
+      login_hint, 
+      target_link_uri, 
+      lti_message_hint, 
+      client_id 
+    }: LTILoginRequest = params;
 
     if (!iss || !login_hint || !target_link_uri || !client_id) {
       throw createError('Missing required parameters', 400);
@@ -47,17 +105,18 @@ export async function handleLogin(req: Request, res: Response, next: NextFunctio
       response_type: 'id_token',
       response_mode: 'form_post',
       prompt: 'none',
-      client_id: client_id,
-      redirect_uri: target_link_uri,
-      login_hint: login_hint,
+      client_id: client_id as string,
+      redirect_uri: target_link_uri as string,
+      login_hint: login_hint as string,
       state: state,
       nonce: nonce,
-      ...(lti_message_hint && { lti_message_hint })
+      ...(lti_message_hint && { lti_message_hint: lti_message_hint as string })
     });
 
     const redirectUrl = `${CLASSERA_AUTH_URL}?${authParams.toString()}`;
 
     console.log('[LTI Login] Redirecting to Classera', {
+      method: req.method,
       nonce,
       state,
       login_hint,
@@ -69,7 +128,6 @@ export async function handleLogin(req: Request, res: Response, next: NextFunctio
     next(error);
   }
 }
-
 export async function handleLaunch(req: Request, res: Response, next: NextFunction) {
   try {
     const { id_token, state } = req.body;
