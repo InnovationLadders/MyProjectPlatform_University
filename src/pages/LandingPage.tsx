@@ -299,7 +299,7 @@ export const LandingPage: React.FC = () => {
             {t('home.testimonials.title')}
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
+            {testimonials?.length > 0 && testimonials.map((testimonial, index) => (
               <motion.div
                 key={testimonial.name}
                 initial={{ opacity: 0, y: 20 }}
