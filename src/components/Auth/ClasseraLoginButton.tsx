@@ -14,13 +14,14 @@ export const ClasseraLoginButton: React.FC<ClasseraLoginButtonProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [serverStatus, setServerStatus] = useState<'checking' | 'online' | 'offline'>('checking');
-
+  const backendBase = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:3001";
   // Check if backend server is running (in development only)
   useEffect(() => {
     if (import.meta.env.DEV) {
       const checkServer = async () => {
         try {
-          const response = await fetch('http://localhost:3001/health', {
+                  const url = new URL("/health", backendBase).toString();
+          const response = await fetch(url, {
             method: 'GET',
             signal: AbortSignal.timeout(2000)
           });
