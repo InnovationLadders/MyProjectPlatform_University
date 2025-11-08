@@ -9,6 +9,7 @@ const router = express.Router();
 router.post('/login', rateLimitMiddleware, handleLogin);
 router.get('/login', rateLimitMiddleware, handleLogin);
 router.post('/launch', handleLaunch);
+router.get('/launch', handleLaunch);
 router.post('/grades', submitGrade);
 router.get('/.well-known/jwks.json', handleJWKS);
 
