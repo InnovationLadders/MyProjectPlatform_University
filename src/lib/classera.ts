@@ -615,12 +615,12 @@ export const initiateLTI13Login = (returnUrl: string = '/home'): void => {
 
   const apiUrl = import.meta.env.DEV
     // ? 'http://localhost:3001/api/lti/login'
-    ? 'http://104.250.236.79:3001/api/lti/login'
+    ? 'https://api.myprojectplatform.com/api/lti/login'
     : '/api/lti/login';
 
   const targetLinkUri = import.meta.env.DEV
     // ? 'http://localhost:3001/api/lti/launch'
-    ? 'http://104.250.236.79:3001/api/lti/launch'
+    ? 'https://api.myprojectplatform.com/api/lti/launch'
     : `${window.location.origin}/api/lti/launch`;
 
   const params = new URLSearchParams({
