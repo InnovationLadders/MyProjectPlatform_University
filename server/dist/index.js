@@ -9,9 +9,19 @@ import ltiRoutes from './routes/lti.js';
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
-app.use(helmet());
+app.use(helmet({ crossOriginResourcePolicy: false,
+    crossOriginOpenerPolicy: false,}));
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['https://partners.classera.com', 'http://localhost:5173',];
+
 app.use(cors({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') || ['https://partners.classera.com', 'http://localhost:5173'],
+    origin: function(origin, callback) {
+        if (!origin) return callback(null, true); // allow non-browser requests
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 }));
 app.use(express.json());
