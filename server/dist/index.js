@@ -15,7 +15,9 @@ const PORT = process.env.PORT || 3001;
 const defaultOrigins = [
   'https://partners.classera.com',
   'http://localhost:5173',
-  'https://myplatformuniversity.netlify.app'
+  'https://myplatformuniversity.netlify.app',
+  'https://myplatformuniversity.netlify.app/login',
+  'https://api.myplatformuniversity.netlify.app'
 ];
 
 const allowedOrigins = (process.env.ALLOWED_ORIGINS?.split(',') || defaultOrigins)
