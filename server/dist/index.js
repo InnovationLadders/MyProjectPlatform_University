@@ -11,7 +11,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 app.use(helmet({ crossOriginResourcePolicy: false,
     crossOriginOpenerPolicy: false,}));
-const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['https://partners.classera.com', 'http://localhost:5173',];
+// const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['https://partners.classera.com', 'http://localhost:5173','https://myplatformuniversity.netlify.app/'];
 
 // app.use(cors({
 //     origin: function(origin, callback) {
@@ -24,18 +24,33 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['https://part
 //     },
 //     credentials: true
 // }));
-app.use(cors({
-    origin: function(origin, callback) {
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
+const allowedOrigins = (process.env.ALLOWED_ORIGINS?.split(',') || [
+  'https://partners.classera.com',
+  'http://localhost:5173',
+  'https://myplatformuniversity.netlify.app/',
+]).map(s => s.trim());
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true); // non-browser clients
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  // Let cors reflect requested headers automatically; only specify if you must:
+  // allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', ...],
+  optionsSuccessStatus: 204,
+};
+
+// Apply once; handles preflights globally
+app.use(cors(corsOptions));
+// Optional if you want to be explicit; reuse the SAME options:
+app.options('*', cors(corsOptions));
+
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+  crossOriginOpenerPolicy: false,
 }));
 app.options('*', cors()); // Handles preflight
 
