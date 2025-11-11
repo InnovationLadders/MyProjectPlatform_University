@@ -16,9 +16,14 @@ export const ClasseraLoginButton: React.FC<ClasseraLoginButtonProps> = ({
   const [serverStatus, setServerStatus] = useState<
     "checking" | "online" | "offline"
   >("checking");
+
+  // Define explicit URLs for frontend and backend for clarity and reliability
+  const frontendBase =
+    import.meta.env.VITE_FRONTEND_URL ?? window.location.origin;
   const backendBase =
-    import.meta.env.VITE_BACKEND_URL ?? "http://localhost:3001";
-  // Check if backend server is running (in development only)
+    import.meta.env.VITE_BACKEND_URL ?? "https://api.myplatformuniversity.com";
+
+  // Health check for backend (development only)
   useEffect(() => {
     if (import.meta.env.DEV) {
       const checkServer = async () => {
@@ -31,29 +36,25 @@ export const ClasseraLoginButton: React.FC<ClasseraLoginButtonProps> = ({
           if (response.ok) {
             setServerStatus("online");
           } else {
-            // setServerStatus('offline');
-            setServerStatus("online");
+            setServerStatus("online"); // For dev, treat any response as online
           }
         } catch (err) {
-          console.log("[ClasseraLoginButton] Backend server not responding");
-          // setServerStatus('offline');
-          setServerStatus("online");
+          setServerStatus("online"); // Remove offline block for dev ease
         }
       };
-
       checkServer();
-      const interval = setInterval(checkServer, 10000); // Check every 10 seconds
+      const interval = setInterval(checkServer, 10000);
       return () => clearInterval(interval);
     } else {
-      setServerStatus("online"); // Assume online in production
+      setServerStatus("online");
     }
-  }, []);
+  }, [backendBase]);
 
+  // Main handler for login
   const handleLogin = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
-    // Check if server is offline in development
     if (import.meta.env.DEV && serverStatus === "offline") {
       setError("الخادم الخلفي غير متصل. يرجى تشغيل الخادم أولاً.");
       return;
@@ -63,21 +64,13 @@ export const ClasseraLoginButton: React.FC<ClasseraLoginButtonProps> = ({
       setIsLoading(true);
       setError(null);
 
-      console.log("[ClasseraLoginButton] Initiating LTI 1.3 login");
+      // Backend endpoint for LTI login initiation
+      const apiUrl = `${backendBase}/api/lti/login`;
 
-      // Determine API URL based on environment
-      const apiUrl = import.meta.env.DEV
-        ?  'http://localhost:3001/api/lti/login'
-          // "https://api.myprojectplatform.com/api/lti/login"
-        : "/api/lti/login";
+      // This must match the LTI launch URL registered with Classera
+      const targetLinkUri = `${frontendBase}/api/lti/launch`;
 
-      // Build target link URI for LTI launch
-      const targetLinkUri = import.meta.env.DEV
-       ? 'http://localhost:3001/api/lti/launch'
-          // "https://api.myprojectplatform.com/api/lti/launch"
-        : `${window.location.origin}/api/lti/launch`;
-
-      // Build LTI login initiation request parameters
+      // Standard LTI 1.3 login params
       const params = new URLSearchParams({
         iss: "https://partners.classera.com",
         client_id: "5ee30a16-c764-47d1-8314-effae92c950a",
@@ -88,9 +81,7 @@ export const ClasseraLoginButton: React.FC<ClasseraLoginButtonProps> = ({
 
       const loginUrl = `${apiUrl}?${params.toString()}`;
 
-      console.log("[ClasseraLoginButton] Redirecting to LTI login:", loginUrl);
-
-      // Redirect to backend LTI login endpoint
+      // Redirect to backend LTI login initiation endpoint
       window.location.href = loginUrl;
     } catch (err) {
       console.error("[ClasseraLoginButton] Login failed:", err);
@@ -101,7 +92,6 @@ export const ClasseraLoginButton: React.FC<ClasseraLoginButtonProps> = ({
 
   return (
     <div className="space-y-3">
-      {/* Server Status Warning (Development Only) */}
       {import.meta.env.DEV && serverStatus === "offline" && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -123,13 +113,11 @@ export const ClasseraLoginButton: React.FC<ClasseraLoginButtonProps> = ({
           </div>
         </motion.div>
       )}
-
       {import.meta.env.DEV && serverStatus === "checking" && (
         <div className="text-xs text-gray-500 text-center">
           جاري التحقق من حالة الخادم...
         </div>
       )}
-
       <motion.button
         whileHover={{ scale: isLoading ? 1 : 1.02 }}
         whileTap={{ scale: isLoading ? 1 : 0.98 }}
@@ -151,7 +139,6 @@ export const ClasseraLoginButton: React.FC<ClasseraLoginButtonProps> = ({
           </>
         )}
       </motion.button>
-
       {error && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -164,7 +151,6 @@ export const ClasseraLoginButton: React.FC<ClasseraLoginButtonProps> = ({
           </div>
         </motion.div>
       )}
-
       {!error && !isLoading && serverStatus === "online" && (
         <div className="text-xs text-gray-500 text-center">
           <div className="flex items-center justify-center gap-1 mb-1">
