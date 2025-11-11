@@ -11,12 +11,12 @@ export default defineConfig({
     proxy: {
       '/api': {
         // target: 'http://localhost:3001',
-        target: 'https://api.myprojectplatform.com/',
+        target: 'https://myprojectplatform.com/',
         changeOrigin: true
       },
       '/lti/launch': {
         // target: 'http://localhost:3001',
-        target: 'https://api.myprojectplatform.com/',
+        target: 'https://myprojectplatform.com/',
         changeOrigin: true
       }
     }
