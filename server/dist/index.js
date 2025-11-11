@@ -52,7 +52,6 @@ app.use(helmet({
   crossOriginResourcePolicy: false,
   crossOriginOpenerPolicy: false,
 }));
-app.options('*', cors()); // Handles preflight
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
