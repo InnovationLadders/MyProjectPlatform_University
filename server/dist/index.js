@@ -36,9 +36,10 @@ const corsOptions = {
 };
 
 // Apply once; handles preflights globally
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors()); // Allow all origins
 // Optional; if kept, MUST use the same options
-app.options('*', cors(corsOptions));
+// app.options('*', cors(corsOptions));
 
 // One Helmet registration is enough
 app.use(helmet({
